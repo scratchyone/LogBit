@@ -41,13 +41,13 @@ export default class LogBit {
   logLevelToColor(level: LOG_LEVELS): string {
     switch (level) {
       case LOG_LEVELS.TRACE:
-        return '#00ff00';
+        return '#b175ff';
       case LOG_LEVELS.DEBUG:
         return '#42bfdb';
       case LOG_LEVELS.INFO:
         return '#42db59';
       case LOG_LEVELS.WARN:
-        return '#ffff00';
+        return '#ffda36';
       case LOG_LEVELS.ERROR:
         return '#ff0000';
       default:
