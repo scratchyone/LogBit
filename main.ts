@@ -10,12 +10,17 @@ export enum LOG_LEVELS {
   ERROR = 4,
 }
 
+let colorCounter = 0;
+const colors = ['#a103fc', '#db427a', '#5c64ff', '#36aaf7'];
 let logLevel = LOG_LEVELS.INFO;
 
 export default class LogBit {
   name: string;
+  color: string;
   public constructor(name: string) {
     this.name = name;
+    this.color = colors[colorCounter % colors.length];
+    colorCounter++;
   }
   logLevelToName(level: LOG_LEVELS): string {
     switch (level) {
@@ -53,7 +58,7 @@ export default class LogBit {
     if (level >= logLevel) {
       if (typeof window === 'undefined') {
         console.log(
-          `${chalk.hex('#a103fc')(`[${this.name}]`)}\t${chalk.hex(
+          `${chalk.hex(this.color)(`[${this.name}]`)}\t${chalk.hex(
             this.logLevelToColor(level)
           )(this.logLevelToName(level))}\t`,
           ...messages
@@ -61,7 +66,7 @@ export default class LogBit {
       } else {
         console.log(
           `%c[${this.name}]\t%c${this.logLevelToName(level)}\t`,
-          'color: #a103fc;',
+          `color: ${this.color};`,
           `color: ${this.logLevelToColor(level)};`,
           ...messages
         );
