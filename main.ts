@@ -10,6 +10,7 @@ export enum LOG_LEVELS {
   ERROR = 4,
 }
 
+let longestName = 0;
 let colorCounter = 0;
 const colors = ['#a103fc', '#db427a', '#5c64ff', '#36aaf7'];
 let logLevel = LOG_LEVELS.INFO;
@@ -19,6 +20,9 @@ export default class LogBit {
   color: string;
   public constructor(name: string) {
     this.name = name;
+    if (name.length > longestName) {
+      longestName = name.length;
+    }
     this.color = colors[colorCounter % colors.length];
     colorCounter++;
   }
@@ -56,16 +60,18 @@ export default class LogBit {
   }
   log(level: LOG_LEVELS, ...messages: any[]): void {
     if (level >= logLevel) {
+      const pad = ' '.repeat(longestName + 2 - this.name.length);
+      const levelPad = ' '.repeat(5 - this.logLevelToName(level).length + 2);
       if (typeof window === 'undefined') {
         console.log(
-          `${chalk.hex(this.color)(`[${this.name}]`)}\t${chalk.hex(
+          `${chalk.hex(this.color)(`[${this.name}]`)}${pad}${chalk.hex(
             this.logLevelToColor(level)
-          )(this.logLevelToName(level))}\t`,
+          )(this.logLevelToName(level))}${levelPad}`,
           ...messages
         );
       } else {
         console.log(
-          `%c[${this.name}]\t%c${this.logLevelToName(level)}\t`,
+          `%c[${this.name}]${pad}}%c${this.logLevelToName(level)}${levelPad}}`,
           `color: ${this.color};`,
           `color: ${this.logLevelToColor(level)};`,
           ...messages
